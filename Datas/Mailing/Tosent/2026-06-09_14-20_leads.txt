@@ -1,0 +1,145 @@
+14:21:55 | info@akvilon.sk | Akvilon s. r. o. | Evgeniy Sergiyenko | Status: Skipped: Cooldown/Blocked   
+14:21:57 | gabriela.botkova@zos.sk | ŽOS Trnava, a.s. | Mgr. Gabriela Botková | Status: Skipped: Cooldown/Blocked   
+14:22:00 | HR@dobra.sk | ARTPROFI ZA, s. r. o. | Artur Shaidiuk | Status: Skipped: Cooldown/Blocked   
+14:22:02 | lucia.bednarova@pentahospitals.com | Nemocnica BORY, a. s. | Lucia Bednárová Ďurovičová | Status: Skipped: Cooldown/Blocked   
+14:22:04 | z.stika@perso-mb.cz | PERSO SK s.r.o. | Zdeněk Štika | Status: Skipped: Cooldown/Blocked   
+14:22:05 | libor.kytka@domovvpohode.sk | Domov v pohode, s.r.o. | Libor Kytka | Status: Skipped: Cooldown/Blocked   
+14:22:07 | nguyenvinbo@gmail.com | vinbostav s. r. o. | Doan Dat Nguyen | Status: Skipped: Cooldown/Blocked   
+14:22:09 | anton.bolega@ab-sped.sk | AB-SPED s.r.o. | Anton Bolega | Status: Skipped: Cooldown/Blocked   
+14:22:11 | a.galcikova@trenkwalder.com | Trenkwalder, a. s. | Mgr. Alena Galčíková | Status: Skipped: Cooldown/Blocked   
+14:22:13 | z.stika@perso-mb.cz | PERSO SK s.r.o. | Zdeněk Štika | Status: Skipped: Cooldown/Blocked   
+14:22:15 | cvoligaerik@profimodul.sk | PROFI MODUL spol. s r.o. | Ing. Erik Cvoliga | Status: Skipped: Cooldown/Blocked   
+14:22:26 | office@mbmgroup.sk | MBM-GROUP, a.s. | Jaroslav Brontvaj | Status: Skipped: Cooldown/Blocked   
+14:22:43 | hvolarova@vitrexmg.com | CHIRANA T.Injecta, a. s.  | Henrieta&nbsp;&nbsp;Volárová | Status: Skipped: Cooldown/Blocked   
+14:22:45 | xuanhinhsk7989@gmail.com | KINH DO, s.r.o. | Xuan Hinh Vu | Status: Skipped: Cooldown/Blocked   
+14:22:47 | z.stika@perso-mb.cz | PERSO SK s.r.o. | Zdeněk Štika | Status: Skipped: Cooldown/Blocked   
+14:22:49 | z.stika@perso-mb.cz | PERSO SK s.r.o. | Zdeněk Štika | Status: Skipped: Cooldown/Blocked   
+14:22:51 | projectbluenergy@gmail.com | Antares logistics s. r. o. | Goran Pesut | Status: Skipped: Cooldown/Blocked   
+14:23:41 | lubos@kackovic.sk | Logista j. s. a. | JUDr. Ľuboš Kačkovič | Status: SUCCESS   
+14:24:47 | gabriela.botkova@zos.sk | ŽOS Trnava, a.s. | Mgr. Gabriela Botková | Status: Skipped: Cooldown/Blocked   
+14:24:48 | nenad.gv@gmail.com | MGE transport s. r. o. | Maria Gvozdenovic | Status: Skipped: Cooldown/Blocked   
+14:24:50 | zuzana.hamrackova@garrettmotion.com | Garrett Motion Slovakia s. r. o. | Zuzana Hamračková | Status: Skipped: Cooldown/Blocked   
+14:24:51 | libor.kytka@domovvpohode.sk | Domov v pohode, s.r.o. | Libor Kytka | Status: Skipped: Cooldown/Blocked   
+14:24:53 | kpss.ke@gmail.com | KPSS s.r.o. | Mykhaylo Neffa | Status: Skipped: Cooldown/Blocked   
+14:24:54 | libor.kytka@zivotvpohode.sk | Život v pohode, s.r.o. | Libor Kytka | Status: Skipped: Cooldown/Blocked   
+14:24:56 | borgulova@tbb.sk | TBB, a. s. | Mgr. Iveta Predajňová | Status: Skipped: Cooldown/Blocked   
+14:24:56 | kariera@tbb.sk | TBB, a. s. | Mgr. Iveta Predajňová | Status: Skipped: Cooldown/Blocked   
+14:24:57 | vstarlines@vstarlines.eu | V Star Lines, s.r.o. | Mgr. mONIKA aNDRISKIN | Status: Skipped: Cooldown/Blocked   
+14:25:01 | z.stika@perso-mb.cz | PERSO SK s.r.o. | Zdeněk Štika | Status: Skipped: Cooldown/Blocked   
+14:25:02 | z.stika@perso-mb.cz | PERSO SK s.r.o. | Zdeněk Štika | Status: Skipped: Cooldown/Blocked   
+14:25:04 | z.stika@perso-mb.cz | PERSO SK s.r.o. | Zdeněk Štika | Status: Skipped: Cooldown/Blocked   
+14:25:05 | z.stika@perso-mb.cz | PERSO SK s.r.o. | Zdeněk Štika | Status: Skipped: Cooldown/Blocked   
+14:25:07 | office@mbmgroup.sk | MBM-GROUP, a.s. | Jaroslav Brontvaj | Status: Skipped: Cooldown/Blocked   
+14:25:08 | z.stika@perso-mb.cz | PERSO SK s.r.o. | Zdeněk Štika | Status: Skipped: Cooldown/Blocked   
+14:25:10 | z.stika@perso-mb.cz | PERSO SK s.r.o. | Zdeněk Štika | Status: Skipped: Cooldown/Blocked   
+14:25:11 | hvolarova@vitrexmg.com | CHIRANA T.Injecta, a. s.  | Henrieta&nbsp;&nbsp;Volárová | Status: Skipped: Cooldown/Blocked   
+14:25:12 | lubos@kackovic.sk | Logista j. s. a. | JUDr. Ľuboš Kačkovič | Status: Skipped: Cooldown/Blocked   
+14:25:14 | z.stika@perso-mb.cz | PERSO SK s.r.o. | Zdeněk Štika | Status: Skipped: Cooldown/Blocked   
+14:25:17 | info@wilsonpremiumgroup.eu | Wilson Consulting s. r. o. | Nikola Josipović | Status: Skipped: Cooldown/Blocked   
+14:25:18 | borgulova@tbb.sk | TBB, a. s. | Bc. Katarína Giertlová | Status: Skipped: Cooldown/Blocked   
+14:25:18 | kariera@tbb.sk | TBB, a. s. | Bc. Katarína Giertlová | Status: Skipped: Cooldown/Blocked   
+14:25:20 | info@wilsonpremiumgroup.eu | Wilson Consulting s. r. o. | Nikola Josipović | Status: Skipped: Cooldown/Blocked   
+14:25:22 | z.stika@perso-mb.cz | PERSO SK s.r.o. | Zdeněk Štika | Status: Skipped: Cooldown/Blocked   
+14:25:24 | HR@dobra.sk | ARTPROFI ZA, s. r. o. | Artur Shaidiuk | Status: Skipped: Cooldown/Blocked   
+14:25:25 | pa7sevensro@gmail.com | K-Agency s. r. o. | Patrik Kocian | Status: Skipped: Cooldown/Blocked   
+14:25:27 | klacanska@revijobs.sk | FAV Group s.r.o. | Ján Verbeník | Status: Skipped: Cooldown/Blocked   
+14:25:28 | director@staffer365.sk | PROFIT TRADE, spol. s r.o., Košice | Hiring Manager | Status: Skipped: Cooldown/Blocked   
+14:26:17 | eulivestory@gmai.com | O.H. TRUCKS s. r. o. | Libor Hrbík | Status: SUCCESS   
+14:27:29 | eulivestory@gmai.com | O.H. TRUCKS s. r. o. | Libor Hrbík | Status: Skipped: Cooldown/Blocked   
+14:27:30 | cvoligaerik@profimodul.sk | PROFI MODUL spol. s r.o. | Erik Anton Cvoliga | Status: Skipped: Cooldown/Blocked   
+14:27:32 | group7sro@gmail.com | Group7 s. r. o. | Boris Hajdú | Status: Skipped: Cooldown/Blocked   
+14:27:33 | office@klc-global.sk | TempWorks s. r. o. | Mgr. Denisa Pártošová | Status: Skipped: Cooldown/Blocked   
+14:27:34 | andrea.matusova@dhl.com | DHL Logistics (Slovakia), spol. s r.o. | Mgr. Andrea Matušová | Status: Skipped: Cooldown/Blocked   
+14:27:35 | anilj@seznam.cz | Satyam Slovakia s. r. o. | Ing. Anil Joneja | Status: Skipped: Cooldown/Blocked   
+14:27:37 | info@high-tech.sk | High Tech construction s. r. o. | Peter Beňo | Status: Skipped: Cooldown/Blocked   
+14:27:38 | profistavbardejov@gmail.com | PROFI STAV BARDEJOV s.r.o. | Ing. Michaela Pangrácová - Piterová | Status: Skipped: Cooldown/Blocked   
+14:27:40 | marta.szibilla@kssk.kroschu.sk | KROMBERG & Schubert s.r.o. | Marta Szibilla | Status: Skipped: Cooldown/Blocked   
+14:27:41 | anilj@seznam.cz | Satyam Slovakia s. r. o. | Ing. Anil Joneja | Status: Skipped: Cooldown/Blocked   
+14:27:43 | group7sro@gmail.com | Group7 s. r. o. | Boris Hajdú | Status: Skipped: Cooldown/Blocked   
+14:27:45 | icpslovakia@gmail.com | B.T.S. Bau Groups s. r. o. | Hiring Manager | Status: Skipped: Cooldown/Blocked   
+14:27:46 | office@nm-steel.eu | NM-steel, s. r. o. | Ján Moravčík | Status: Skipped: Cooldown/Blocked   
+14:27:49 | eulivestory@gmai.com | O.H. TRUCKS s. r. o. | Libor Hrbík | Status: Skipped: Cooldown/Blocked   
+14:27:50 | klacanska@revijobs.sk | FAV Group s.r.o. | Ján Verbeník | Status: Skipped: Cooldown/Blocked   
+14:27:52 | eulivestory@gmai.com | O.H. TRUCKS s. r. o. | Libor Hrbík | Status: Skipped: Cooldown/Blocked   
+14:28:09 | real.slovak@gmail.com | Fenix trans s. r. o. | Vladislav Varenik | Status: Skipped: Cooldown/Blocked   
+14:28:10 | lndstaff.tt@gmail.com | DAMA Bau s. r. o. | Marin Lukačević | Status: Skipped: Cooldown/Blocked   
+14:28:11 | borysov@nikos-personal.sk | Nikos Personal s. r. o. | Eduard Borysov | Status: Skipped: Cooldown/Blocked   
+14:28:13 | idcarsk@gmail.com | ID CAR s.r.o. | Lolita Kharchenko | Status: Skipped: Cooldown/Blocked   
+14:28:14 | hr@tempworks.eu | TempWorks s. r. o. | Mgr. Abdalkarim&nbsp;&nbsp;Aladawi | Status: Skipped: Cooldown/Blocked   
+14:28:17 | jananw@centrum.sk | Savicnet-Bau s.r.o. | Dorde Savić | Status: Skipped: Cooldown/Blocked   
+14:28:19 | praca@traust.sk | Traust SK s. r. o. | Pavol Pavlik | Status: Skipped: Cooldown/Blocked   
+14:28:21 | dominika.ivanova@convatec.com | Unomedical s.r.o. | Mgr. Dominika Ivanová | Status: Skipped: Cooldown/Blocked   
+14:28:22 | yankovskyi.yehor@gmail.com | M2 BUD s. r. o. | Yehor&nbsp;&nbsp;Yankovskyi | Status: Skipped: Cooldown/Blocked   
+14:29:10 | hrnkova@penzion-hoffer.sk | LAPI SK, s. r. o. | Jana Hrnková | Status: SUCCESS   
+14:29:11 | yankovskyi.yehor@gmail.com | M2 BUD s. r. o. | Yehor&nbsp;&nbsp;Yankovskyi | Status: Skipped: Cooldown/Blocked   
+14:29:13 | zamestnanie.spa.company@gmail.com | Spa Company s. r. o. | Dagmar&nbsp;&nbsp;Miškovičová | Status: Skipped: Cooldown/Blocked   
+14:29:15 | marketing@hotelsun.sk | HOTEL SUN, s. r. o. | Mgr. Martina Adamčíková | Status: Skipped: Cooldown/Blocked   
+14:29:17 | uctaren@nelapek.sk | NELAPEK s.r.o. | Gizela&nbsp;&nbsp;Huszárová&nbsp;&nbsp; | Status: Skipped: Cooldown/Blocked   
+14:29:20 | m.orenicova@managementsolutions.sk | Management Quality, s. r. o. | Mária Oreničová | Status: Skipped: Cooldown/Blocked   
+14:29:21 | yukhy2024@gmail.com | Yukhy s. r. o. | Oleksander Yukhymenko | Status: Skipped: Cooldown/Blocked   
+14:29:23 | ucto@najkrajsieihriska.sk | NAJKRAJŠIE IHRISKÁ s.r.o. | Ing. Ľubomíra Vlčej | Status: Skipped: Cooldown/Blocked   
+14:29:24 | idcarsk@gmail.com | ID CAR s.r.o. | Lolita Kharchenko | Status: Skipped: Cooldown/Blocked   
+14:29:26 | anna@dmjeurope.com | DMJ Europe s. r. o. | Anna Chovanová | Status: Skipped: Cooldown/Blocked   
+14:29:27 | info@smaart.sk | DEV-HA GLOBAL s. r. o. | Oleksandra&nbsp;&nbsp;Tyshkevych | Status: Skipped: Cooldown/Blocked   
+14:29:28 | dzibela@3j3d.sk | 3J-3D int.,s.r.o. | Dušan Dzíbela | Status: Skipped: Cooldown/Blocked   
+14:29:30 | litonitsro@gmail.com | LITONIT s. r. o. | Stanislava Sykorova | Status: Skipped: Cooldown/Blocked   
+14:29:31 | ria@hosko.eu | Hoško, a.s. | Ing. Ria Hošková | Status: Skipped: Cooldown/Blocked   
+14:29:33 | alduriasro@gmail.com | ALDURIA s.r.o. | SRDAN CVIJETINOVIC | Status: Skipped: Cooldown/Blocked   
+14:29:35 | dealandwin@dealandwin.sk | DEAL & WIN, s.r.o. | DEAL&amp;WIN HR | Status: Skipped: Cooldown/Blocked   
+14:29:36 | marekskvn@gmail.com | Zu7425 s. r. o. | Hoe Tran | Status: Skipped: Cooldown/Blocked   
+14:29:37 | dealandwin@dealandwin.sk | DEAL & WIN, s.r.o. | Mgr. Linda Gašpieriková | Status: Skipped: Cooldown/Blocked   
+14:29:38 | zora.siskova@saneca.com | Saneca Pharmaceuticals a. s. | Zora Šišková | Status: Skipped: Cooldown/Blocked   
+14:29:39 | info@ponfys.net | BB BOX s. r. o. | Ana Pinćir | Status: Skipped: Cooldown/Blocked   
+14:29:41 | hr@tempworks.eu | TempWorks s. r. o. | Bc. Abdalkarim&nbsp;&nbsp;Aladawi | Status: Skipped: Cooldown/Blocked   
+14:29:42 | starttradesro@gmail.com | Start trade s.r.o. | Martin Gál | Status: Skipped: Cooldown/Blocked   
+14:29:43 | abc.invest.sro@gmail.com | ABC Investments s.r.o. | Beba Bezáková | Status: Skipped: Cooldown/Blocked   
+14:29:44 | zora.siskova@saneca.com | Saneca Pharmaceuticals a. s. | Zora Šišková | Status: Skipped: Cooldown/Blocked   
+14:30:35 | dealandwin@dealandwin.sk | DEAL & WIN, s.r.o. | DEAL&amp;WIN HR | Status: Skipped: Cooldown/Blocked   
+14:30:36 | btpartslevice@gmail.com | BT parts, s.r.o. | Branislav&nbsp;&nbsp;Struhar | Status: Skipped: Cooldown/Blocked   
+14:30:37 | m.orenicova@managementsolutions.sk | Management Quality, s. r. o. | Mária Oreničová | Status: Skipped: Cooldown/Blocked   
+14:30:39 | marekskvn@gmail.com | Ba Tuan Nguyen | Ba Tuan NGUYEN | Status: Skipped: Cooldown/Blocked   
+14:30:40 | starttradesro@gmail.com | Start trade s.r.o. | Martin Gál | Status: Skipped: Cooldown/Blocked   
+14:30:41 | starttradesro@gmail.com | Start trade s.r.o. | Martin Gál | Status: Skipped: Cooldown/Blocked   
+14:30:43 | eulivestory@gmai.com | O.H. TRUCKS s. r. o. | Libor Hrbík | Status: Skipped: Cooldown/Blocked   
+14:30:44 | starttradesro@gmail.com | Start trade s.r.o. | Martin Gál | Status: Skipped: Cooldown/Blocked   
+14:30:46 | info.ponfys@gmail.com | PRIMORA s. r. o. | Marko Bilinčić | Status: Skipped: Cooldown/Blocked   
+14:30:47 | abc.invest.sro@gmail.com | ABC Investments s.r.o. | Beba Bezáková | Status: Skipped: Cooldown/Blocked   
+14:30:48 | nordwich@centrum.sk | nordwich s.r.o. | Damir Petek | Status: Skipped: Cooldown/Blocked   
+14:30:50 | kikahserbin@gmail.com | Heglas, s. r. o. | Khrystyna Serbin | Status: Skipped: Cooldown/Blocked   
+14:31:37 | vladimirgrznar@gmail.com | Inter Connect Services s.r.o. | JUDr. Vladimír Grznár | Status: SUCCESS   
+14:31:38 | starttradesro@gmail.com | Start trade s.r.o. | Martin Gál | Status: Skipped: Cooldown/Blocked   
+14:32:21 | sodiansro@gmail.com | Sodian Slovakia s. r. o. | Matej Lukáč | Status: SUCCESS   
+14:32:22 | ide@tytex.sk | Tytex Slovakia s.r.o. | Ingrid Demjanová | Status: Skipped: Cooldown/Blocked   
+14:33:10 | elena.saiapina90@gmail.com | Horizont s. r. o. | Elena Pasteliak | Status: SUCCESS   
+14:33:13 | zamestnanie@novoplast.sk | Novoplast, výrobné družstvo Sereď | Personálne oddelenie | Status: Skipped: Cooldown/Blocked   
+14:33:15 | hr@ges-slovakia.com | Global Engineering Services (GES) s. r. o. | Natalia Korman | Status: Skipped: Cooldown/Blocked   
+14:33:17 | marekskvn@gmail.com | Ba Tuan Nguyen | Ba Tuan NGUYEN | Status: Skipped: Cooldown/Blocked   
+14:33:19 | abc.invest.sro@gmail.com | ABC Investments s.r.o. | Beba Bezáková | Status: Skipped: Cooldown/Blocked   
+14:33:21 | rmojsilovic@gmail.com | APRONIKA, spol. s r. o. | Radoslav Mojsilovic | Status: Skipped: Cooldown/Blocked   
+14:33:23 | marekskvn@gmail.com | Ba Tuan Nguyen | Ba Tuan NGUYEN | Status: Skipped: Cooldown/Blocked   
+14:33:25 | abc.invest.sro@gmail.com | ABC Investments s.r.o. | Beba Bezáková | Status: Skipped: Cooldown/Blocked   
+14:33:26 | info.ponfys@gmail.com | PRIMORA s. r. o. | Marko Bilinčić | Status: Skipped: Cooldown/Blocked   
+14:33:28 | marekskvn@gmail.com | Ba Tuan Nguyen | Ba Tuan NGUYEN | Status: Skipped: Cooldown/Blocked   
+14:33:31 | jananw@centrum.sk | Savicnet-Bau s.r.o. | Dorde Savić | Status: Skipped: Cooldown/Blocked   
+14:33:32 | starttradesro@gmail.com | Start trade s.r.o. | Martin Gál | Status: Skipped: Cooldown/Blocked   
+14:33:34 | personalne@agromacaj.sk | AGROMAČAJ a.s. | Personalne&nbsp;&nbsp;oddelenie | Status: Skipped: Cooldown/Blocked   
+14:33:36 | abc.invest.sro@gmail.com | ABC Investments s.r.o. | Beba Bezáková | Status: Skipped: Cooldown/Blocked   
+14:33:37 | abc.invest.sro@gmail.com | ABC Investments s.r.o. | Beba Bezáková | Status: Skipped: Cooldown/Blocked   
+14:33:39 | marekskvn@gmail.com | Ba Tuan Nguyen | Ba Tuan NGUYEN | Status: Skipped: Cooldown/Blocked   
+14:33:40 | eulivestory@gmai.com | O.H. TRUCKS s. r. o. | Libor Hrbík | Status: Skipped: Cooldown/Blocked   
+14:33:42 | icpslovakia@gmail.com | TIP TOP 2025 s. r. o. | Hiring Manager | Status: Skipped: Cooldown/Blocked   
+14:34:35 | zita.hajduskova@manuvia.com | Manuvia PERSONEL EFEKT, s.r.o. | Zita Hajdušková | Status: SUCCESS   
+14:34:37 | recepcia@tnlogistica.com | TN logistica SK, s.r.o. | Recepcia TN Logistica SK s.r.o. Recepcia | Status: Skipped: Cooldown/Blocked   
+14:34:39 | posaonitra@gmail.com | VEBA MONT s.r.o. | Tijana Dordevic | Status: Skipped: Cooldown/Blocked   
+14:34:41 | nguyenvinbo@gmail.com | vinbostav s. r. o. | Doan Dat Nguyen | Status: Skipped: Cooldown/Blocked   
+14:34:43 | nguyenvinbo@gmail.com | vinbostav s. r. o. | Doan Dat Nguyen | Status: Skipped: Cooldown/Blocked   
+14:34:44 | info.nisam1@gmail.com | NISAM s. r. o. | Klara Pap | Status: Skipped: Cooldown/Blocked   
+14:34:46 | lubos@kackovic.sk | Logista j. s. a. | JUDr. Ľuboš Kačkovič | Status: Skipped: Cooldown/Blocked   
+14:35:36 | sekretariatgr@imbiz.sk | LUX DC s.r.o. | Michaela Žifčáková | Status: SUCCESS   
+14:36:00 | pressburg@pressburg.net | Pressburg Logistic & Transport s. r. o. | Ivan Kubala | Status: Skipped: Cooldown/Blocked   
+14:36:01 | sekretariatgr@imbiz.sk | MABOM s.r.o. | Mgr. Michaela Žifčáková | Status: Skipped: Cooldown/Blocked   
+14:36:07 | khayalshiraliyev@gmail.com | XEZER s. r. o. | Khayal Shiraliyev | Status: Skipped: Cooldown/Blocked   
+14:36:09 | recepcia@tnlogistica.com | TN logistica SK, s.r.o. | &nbsp;&nbsp;Recepcia TN Logistica SK s.r.o. | Status: Skipped: Cooldown/Blocked   
+14:36:11 | silvia@vmcompany.sk | VM Company s. r. o. | Silvia Macášová | Status: Skipped: Cooldown/Blocked   
+14:36:13 | hrnkova@penzion-hoffer.sk | AUTOSERVIS Hoffer spol. s r.o. | Jana Hrnková | Status: Skipped: Cooldown/Blocked   
+14:36:15 | immico@immiconsulty.com | Global Engineering Services (GES) s. r. o. | Mgr. Veronika Front | Status: Skipped: Cooldown/Blocked   
