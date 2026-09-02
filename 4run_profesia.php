@@ -2,98 +2,154 @@
 require 'vendor/autoload.php';
 require 'src/Config.php';
 require 'src/Scraper.php';
-require 'src/Mailer.php';
 
 use Dazz\Legacy\Config;
 use Dazz\Legacy\Scraper;
-use Dazz\Legacy\Mailer;
-
-$archive_folder = 'Datas/Mailing/Tosent/';
-$archive_file = $archive_folder . date('hmi-Y-m-d') . 'mail.txt';
 
 /**
- * THE BRIDGE: Calls the Node.js script in the /js folder
+ * Uses the Headless Chromium instance to render the inner page
+ * and extract emails via mailto links and regex matching.
  */
-function getEmailViaPuppeteer($jobUrl) {
-    $command = 'node js/get_email.js ' . escapeshellarg($jobUrl);
-    var_dump($command);
-    $output = shell_exec($command);
+function extractEmailsViaBrowser($scraper, $jobUrl) {
+    $selector = "(() => {
+        let emails = [];
+        
+        // Strategy A: Clickable mailto links
+        const links = document.querySelectorAll('a[href^=\"mailto:\"]');
+        links.forEach(l => emails.push(l.href.replace('mailto:', '').split('?')[0].trim()));
+        
+        // Strategy B: Full-text page regex scan
+        const bodyText = document.body.innerText;
+        const matches = bodyText.match(/[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,8}/g);
+        if (matches) {
+            emails.push(...matches);
+        }
+        
+        return emails;
+    })()";
+
+    $rawEmails = $scraper->scrapeLinks($jobUrl, $selector, 4);
     
-    $email = trim($output);
-    if (filter_var($email, FILTER_VALIDATE_EMAIL)) {
-        return $email;
+    if (!empty($rawEmails)) {
+        $validEmails = array_filter($rawEmails, function($email) {
+            $email = strtolower(trim($email));
+            return !preg_match('/\.(png|jpg|jpeg|gif|svg|webp|js|css|json)$/i', $email) 
+                   && filter_var($email, FILTER_VALIDATE_EMAIL);
+        });
+        
+        return array_values(array_unique($validEmails));
     }
-    return null;
+    
+    return [];
 }
 
-$pagecount = 10;
-for ($p = 1; $p <= $pagecount; $p++) {
-// --- INITIALIZATION ---
+echo "=== STARTING SLUZBY GOV PURE SCRAPER ===\n";
+
 set_time_limit(0);
-$db = Config::getDB();
-$scraper = new Scraper(Config::CHROME_PATH);
-$mailer = new Mailer($db);
-$senderIds = [1, 2, 3, 4, 5, 6];
 
-echo "--- STARTING SLUZBY GOV BRIDGE SCRAPE ---\n";
+// Setup Temp and Final Directory Paths
+$finalFolder = __DIR__ . '/Datas/Mailing/textfile/';
+$tempFolder  = $finalFolder . 'temp/';
 
-    // Search URL targeting Indian recruitment leads
-    $targetUrl = "https://www.sluzbyzamestnanosti.gov.sk/pracovne-ponuky?pageNr=$p&pageSize=30&zdrojPonuky=VPM&pozadovanaZnalostSk=false";
-
-    echo $targetUrl . "\n";
-
-/**
- * NEW SELECTOR: Based on your HTML snippet
- * Targets 'govuk-link' classes that contain '/pracovne-ponuky/'
- */
-$selector = "Array.from(document.querySelectorAll('a.govuk-link'))
-              .filter(a => a.href.includes('/pracovne-ponuky/'))
-              .map(a => a.href)";
-
-// Increased wait to 45s for pre-maintenance stability
-$links = $scraper->scrapeLinks($targetUrl, $selector, 45);
-
-if (empty($links)) {
-    echo "[!] No links found. The portal API might be slow today.\n";
-    if ($p === $pagecount) {
-       exit;
-    }   
-    
+if (!is_dir($tempFolder)) {
+    mkdir($tempFolder, 0777, true);
 }
 
-if (!is_dir($archive_folder)) mkdir($archive_folder, 0777, true);
-$archive_handle = fopen($archive_file, 'a');
+// Generate dynamic timestamp filename
+$microtime = microtime(true);
+$microSeconds = sprintf("%06d", ($microtime - floor($microtime)) * 1000000);
+$dynamicFileName = date('dmyHis') . $microSeconds . '_mail.txt';
 
-echo "Found " . count($links) . " jobs. Starting Node.js Bridge...\n";
+$tempTextPath  = $tempFolder . $dynamicFileName;
+$finalTextPath = $finalFolder . $dynamicFileName;
 
-foreach ($links as $link) {
-    echo "Processing: " . basename($link) . "\n";
-    
-    $email = getEmailViaPuppeteer($link);
-    
-    if ($email) {
-        // Skip administrative government emails
-        if (preg_match('/@upsvr\.gov\.sk|@sluzbyzamestnanosti\.sk/i', $email)) continue;
+echo "Output target configured: " . $tempTextPath . "\n";
 
-        $sender = $mailer->getValidSender($senderIds, 400);
-        if (!$sender) die("Daily limit reached.\n");
+$archive_handle = fopen($tempTextPath, 'a');
+$leadsSavedCount = 0;
+$scraper = null;
 
+try {
+    $scraper = new Scraper(Config::CHROME_PATH);
 
-         $log_entry = $email . PHP_EOL;
-    fwrite($archive_handle, $log_entry);
+    $pagecount = 10;
 
-        $status = $mailer->triggerEmailSending($email, $sender['id'], 'sk');
-        echo "   -> Found: $email | Mailer: $status | Sender ID: {$sender['id']} | Sender Count: {$sender['count']}\n";
+    for ($p = 1; $p <= $pagecount; $p++) {
+        
+        $targetUrl = "https://www.sluzbyzamestnanosti.gov.sk/pracovne-ponuky?pageNr=$p&pageSize=30&zdrojPonuky=VPM&pozadovanaZnalostSk=false";
+        echo "\n[PAGINATION] Scraping Page $p: " . $targetUrl . "\n";
 
-        if (strpos($status, 'Success') !== false) {
-             
+        $selector = "(() => {
+            window.scrollTo(0, document.body.scrollHeight);
+            
+            const allLinks = Array.from(document.querySelectorAll('a'));
+            
+            const jobLinks = allLinks.filter(a => {
+                const pattern = new RegExp('/pracovne-ponuky/[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}', 'i');
+                return a.href && pattern.test(a.href);
+            });
+            
+            return jobLinks.map(a => a.href);
+        })()";
+
+        $links = $scraper->scrapeLinks($targetUrl, $selector, 10);
+
+        if (empty($links)) {
+            echo "[!] No links found on page $p.\n";
+            continue; 
+        }
+
+        echo "Found " . count($links) . " jobs. Extracting emails via Headless Browser...\n";
+
+        foreach ($links as $link) {
+            echo "Processing: " . basename($link) . "\n";
+            
+            $extractedEmails = extractEmailsViaBrowser($scraper, $link);
+            
+            if (!empty($extractedEmails)) {
+                foreach ($extractedEmails as $email) {
+                    
+                    // Filter generic administrative domains
+                    if (preg_match('/@upsvr\.gov\.sk|@sluzbyzamestnanosti\.sk/i', $email)) {
+                        echo "   -> Skipped: Government Admin Email ($email)\n";
+                        continue;
+                    }
+
+                    fwrite($archive_handle, $email . PHP_EOL);
+                    $leadsSavedCount++;
+                    echo "   -> Saved Lead: $email\n";
+                }
+            } else {
+                echo "   -> No valid email found on detail page.\n";
+            }
+        }
+    }
+} catch (Exception $e) {
+    echo "FATAL ERROR: " . $e->getMessage() . "\n";
+} finally {
+    // 1. Flush and close text file handle
+    if (is_resource($archive_handle)) {
+        fclose($archive_handle);
+    }
+
+    // 2. Close scraper handle
+    if ($scraper) {
+        $scraper->close();
+    }
+
+    // 3. Move file from /temp/ to /textfile/ directory
+    if ($leadsSavedCount > 0 && file_exists($tempTextPath)) {
+        if (rename($tempTextPath, $finalTextPath)) {
+            echo "\n=== SUCCESS: $leadsSavedCount LEADS SAVED. FILE MOVED TO: $finalTextPath ===\n";
+        } else {
+            echo "\n=== WARNING: COULD NOT MOVE FILE FROM TEMP TO FINAL LOCATION. ===\n";
         }
     } else {
-        echo "   -> No email found on detail page.\n";
+        if (file_exists($tempTextPath)) {
+            unlink($tempTextPath); // Clean up empty temp file
+        }
+        echo "\n--- NOTICE: NO LEADS CAPTURED. TEMP FILE CLEANED UP. ---\n";
     }
 }
 
-$db->close();   
-$scraper->close();
-echo "\n--- BRIDGE SESSION COMPLETE ---\n";
-}
+echo "\n--- SESSION COMPLETE ---\n";

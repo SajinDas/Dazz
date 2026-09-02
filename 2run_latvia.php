@@ -1,28 +1,41 @@
 <?php
 require 'vendor/autoload.php';
 require 'src/Config.php';
-require 'src/Mailer.php';
 
 use Dazz\Legacy\Config;
-use Dazz\Legacy\Mailer;
 use Playwright\Playwright;
 
 // --- INITIALIZATION ---
 set_time_limit(0);
-$db = Config::getDB();
-$mailer = new Mailer($db);
-$senderIds = [5, 4, 3, 2, 1, 6]; 
-$lang = 'lv'; 
 
-$archive_folder = 'Datas/Mailing/Tosent/';
-$archive_file = $archive_folder . date('hmi-Y-m-d') . 'mail.txt';
-if (!is_dir($archive_folder)) mkdir($archive_folder, 0777, true);
-$archive_handle = fopen($archive_file, 'a');
+// Define folder paths
+$finalFolder = __DIR__ . '/Datas/Mailing/textfile/';
+$tempFolder  = $finalFolder . 'temp/';
+
+if (!is_dir($tempFolder)) {
+    mkdir($tempFolder, 0777, true);
+}
+
+// Dynamically naming file with timestamp and microtime suffix
+$microtime = microtime(true);
+$microSeconds = sprintf("%06d", ($microtime - floor($microtime)) * 1000000);
+$dynamicFileName = date('dmyHis') . $microSeconds . '_leads.txt';
+
+$tempTextPath  = $tempFolder . $dynamicFileName;
+$finalTextPath = $finalFolder . $dynamicFileName;
+
+echo "=== NVA PORTAL SCRAPER (TEXT QUEUE) STARTED ===\n";
+echo "Temp target configured: " . $tempTextPath . "\n";
+
+$archive_handle = fopen($tempTextPath, 'a');
+$leadsSavedCount = 0;
 
 try {
     $browserContext = Playwright::chromium(['headless' => true]); 
     $page = $browserContext->newPage();
 } catch (Exception $e) {
+    fclose($archive_handle);
+    if (file_exists($tempTextPath)) unlink($tempTextPath);
     die("Fatal Error: Playwright failed to start.\n");
 }
 
@@ -66,8 +79,6 @@ try {
         try {
             $page->goto($subUrl, ['waitUntil' => 'networkidle', 'timeout' => 30000]);
             
-            // --- NEW: WAIT FOR THE DATA TO APPEAR ---
-            // This waits specifically for the '.value' class from your screenshot
             try {
                 $page->waitForSelector('.form-group .value', ['timeout' => 5000]);
             } catch (Exception $e) {
@@ -77,8 +88,6 @@ try {
             // --- DATE EXTRACTION ---
             $dateInfo = $page->evaluate("() => {
                 const result = { found: false, dateText: 'Not Found', diffDays: 999 };
-                
-                // Find all groups
                 const groups = Array.from(document.querySelectorAll('.form-group'));
                 const dateGroup = groups.find(g => g.innerText.includes('Publicēšanas datums'));
                 
@@ -136,28 +145,40 @@ try {
 
             if (!empty($foundEmails)) {
                 foreach ($foundEmails as $email) {
-                    $sender = $mailer->getValidSender($senderIds, 400);
-                    if (!$sender) {
-                        echo "CRITICAL: Daily limits reached.\n";
-                        break 2;
-                    }
-
-                    $status = $mailer->triggerEmailSending($email, $sender['id'], $lang);
-                    echo "    >>> Lead: $email | Result: $status | Sender: " . $sender['id'] . " | Count: " . $sender['count'] . "\n";
-                    
-                    fwrite($archive_handle, $email. PHP_EOL);
-
-                    
+                    fwrite($archive_handle, $email . PHP_EOL);
+                    $leadsSavedCount++;
+                    echo "    [+] Saved to text queue: $email\n";
                 }
             }
         } catch (Exception $subE) {
             echo "    [!] Error: " . $subE->getMessage() . "\n";
         }
     }
+    
 } catch (Exception $e) {
     echo "Fatal Error: " . $e->getMessage() . "\n";
 } finally {
-    fclose($archive_handle);
-    $db->close();
-    $browserContext->close();
+    // 1. Close file handle to ensure data is flushed
+    if (is_resource($archive_handle)) {
+        fclose($archive_handle);
+    }
+    
+    // 2. Close Playwright context
+    if (isset($browserContext)) {
+        $browserContext->close();
+    }
+
+    // 3. File relocation logic
+    if ($leadsSavedCount > 0 && file_exists($tempTextPath)) {
+        if (rename($tempTextPath, $finalTextPath)) {
+            echo "\n=== SUCCESS: $leadsSavedCount LEADS RECORDED. MOVED TO: $finalTextPath ===\n";
+        } else {
+            echo "\n=== WARNING: COULD NOT MOVE FILE FROM TEMP TO FINAL DESTINATION. ===\n";
+        }
+    } else {
+        if (file_exists($tempTextPath)) {
+            unlink($tempTextPath); // Clean up empty temp file
+        }
+        echo "\n--- NOTICE: NO LEADS CAPTURED. TEMP FILE CLEANED UP. ---\n";
+    }
 }

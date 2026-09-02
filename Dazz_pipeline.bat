@@ -1,7 +1,7 @@
 @echo off
 title Dazz Legacy - INFINITE RECRUITMENT PIPELINE
 color 0E
-mode con: cols=100 lines=40
+mode con: cols=100 lines=100
 cd /d D:\Xampp\htdocs\Dazz
 
 :START_PIPELINE
@@ -12,18 +12,16 @@ echo                INFINITE AUTOMATION PIPELINE (LOOP)
 echo ====================================================================
 echo Cycle Started at: %date% %time%
 echo.
-
-
-
-:: STEP 1: Process Blocked Emails
-echo [1/6] STEP 1: CLEANING DATABASE (Unsubscribes)...
-php 1blockEmail.php
-echo.
+ 
+echo ======================Cycle Started at: %date% %time%==============================================
 
 :: STEP 2: Process Blocked Emails
-echo [2/6] STEP 2: Slovakia EuroJobs Scraping...
-php run_euro.php
+echo [2/6] STEP 2: Slovakia EuroJobs ...
+php Euro_Slovakia.php
 echo.
+
+echo ============================Cycle Started at: %date% %time%========================================
+ 
 
 :: STEP 3: Scrape NVA Latvia
 echo [3/6] STEP 3: SCRAPING NVA LATVIA...
@@ -40,16 +38,7 @@ echo [5/6] STEP 5: SCRAPING PROFESIA...
 php 4run_profesia.php
 echo.
 
-:: STEP 6: Run Bulk Mailer
-echo [6/6] STEP 6: SENDING QUEUED EMAILS...
-::php 5SendEmail.php
-echo.
-
-
-:: STEP 6: Run Slovakia Mailer
-echo [6/5] STEP 6: SENDING QUEUED EMAILS...
-php 6run_Slovak_Euros.php
-echo.
+ 
 
 echo ====================================================================
 echo Cycle Finished at: %time%

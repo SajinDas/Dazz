@@ -2,17 +2,27 @@
 require 'vendor/autoload.php';
 require 'src/Config.php';
 require 'src/Scraper.php';
-require 'src/Mailer.php';
-//require 'blockEmail.php'; // Ensure this is included to handle blocked emails before scraping
 
 use Dazz\Legacy\Config;
 use Dazz\Legacy\Scraper;
-use Dazz\Legacy\Mailer;
 
-$archive_folder = 'Datas/Mailing/Tosent/';
-$archive_file = $archive_folder . date('hmi-Y-m-d') . 'mail.txt';
+// --- 1. DIRECTORY & FILE SETUP ---
+$finalFolder = __DIR__ . '/Datas/Mailing/textfile/';
+$tempFolder  = $finalFolder . 'temp/';
 
-// --- YOUR POLISHED API LOGIC (REMAINED UNCHANGED) ---
+if (!is_dir($tempFolder)) {
+    mkdir($tempFolder, 0777, true);
+}
+
+// Generate dynamic filename with timestamp and microsecond precision
+$microtime = microtime(true);
+$microSeconds = sprintf("%06d", ($microtime - floor($microtime)) * 1000000);
+$dynamicFileName = date('dmyHis') . $microSeconds . '_mail.txt';
+
+$tempTextPath  = $tempFolder . $dynamicFileName;
+$finalTextPath = $finalFolder . $dynamicFileName;
+
+// --- 2. API LOGIC ---
 function getEmailsForJob($jobId) {
     $initialUrl = "https://europa.eu/eures/portal/jv-se/jv-details/" . $jobId;
     $apiUrl = "https://europa.eu/eures/api/jv-searchengine/public/jv/id/" . $jobId;
@@ -42,75 +52,84 @@ function getEmailsForJob($jobId) {
     return [];
 }
 
-
-
+// --- 3. MAIN EXECUTION ---
 echo "=== EURES JOB LEAD SCRAPER STARTED ===\n";
-// --- MAIN EXECUTION ---
 set_time_limit(0);
-$db = Config::getDB();
-echo "=== EURES JOB LEAD SCRAPER STARTED ==2=\n";
-$scraper = new Scraper(Config::CHROME_PATH);
-$mailer = new Mailer($db);
-$checkpointFile = __DIR__ . '/checkpoint.txt';
-$senderIds = [5,4,3,1,6]; // YOUR SENDER IDs IN PRIORITY ORDER
 
-if (!is_dir($archive_folder)) mkdir($archive_folder, 0777, true);
-$archive_handle = fopen($archive_file, 'a');
+$scraper = null;
+$archive_handle = fopen($tempTextPath, 'a');
+$leadsSavedCount = 0;
 
-// Checkpoint Logic
-$startPage = file_exists($checkpointFile) ? (int)file_get_contents($checkpointFile) : 1;
-$endPage = 202; 
+try {
+    $scraper = new Scraper(Config::CHROME_PATH);
+    $checkpointFile = __DIR__ . '/checkpoint.txt';
 
-echo "--- SESSION START: PAGE $startPage ---\n";
+    echo "Temp text queue file target: " . $tempTextPath . "\n";
 
-for ($p = $startPage; $p <= $endPage; $p++) {
-    file_put_contents($checkpointFile, $p);
-    echo "\n[PAGINATION] Accessing Page $p...\n";
-    
-    // YOUR SPECIFIC TARGET LINK
-    $targetUrl = "https://europa.eu/eures/portal/jv-se/search?page=$p&resultsPerPage=50&orderBy=MOST_RECENT&locationCodes=at,cy,cz,de,ee,el,es,fr,hr,lt,lv,mt,nl,pl,se,si,bg,it,hu,ro,pt&positionScheduleCodes=NS,flextime,fulltime,parttime&publicationPeriod=LAST_THREE_DAYS&escoIsco=C35,C6,C7,C8,C9,C54,C53,C51,C32&minNumberPost=4&previousPageType=findJob&lang=en";
+    // Checkpoint Logic
+    $startPage = file_exists($checkpointFile) ? (int)file_get_contents($checkpointFile) : 1;
+    $endPage = 202; 
 
-    //$targetUrl = "https://europa.eu/eures/portal/jv-se/search?page=$p&resultsPerPage=50&orderBy=MOST_RECENT&locationCodes=sk&positionScheduleCodes=NS,flextime,fulltime,parttime&publicationPeriod=LAST_MONTH&escoIsco=C35,C6,C7,C8,C9&minNumberPost=4&lang=en";
-    
-    $selector = "Array.from(document.links).map(l=>l.href).filter(h=>h&&h.includes('jv-details'))";
-    $links = $scraper->scrapeLinks($targetUrl, $selector, 35);
+    echo "--- SESSION START: PAGE $startPage ---\n";
 
-    if (empty($links)) {
-        echo "[END] No links found on Page $p.\n";
-        break;
-    }
-
-    foreach ($links as $link) {
-        $jobId = explode('?', str_replace("https://europa.eu/eures/portal/jv-se/jv-details/", "", $link))[0];
-        parse_str(parse_url($link, PHP_URL_QUERY) ?? '', $params);
-        $lang = $params['jvDisplayLanguage'] ?? 'en';
-
-        $emails = getEmailsForJob($jobId);
+    for ($p = $startPage; $p <= $endPage; $p++) {
+        file_put_contents($checkpointFile, $p);
+        echo "\n[PAGINATION] Accessing Page $p...\n";
         
-        foreach ($emails as $email) {
-            // Check Daily Limits Real-time before sending
-            $sender = $mailer->getValidSender($senderIds, 400);
-             
+        $targetUrl = "https://europa.eu/eures/portal/jv-se/search?page=$p&resultsPerPage=50&orderBy=MOST_RECENT&locationCodes=at,cy,cz,ee,el,es,fr,hr,lt,lv,mt,nl,pl,se,si,bg,it,hu,ro,pt&positionScheduleCodes=NS,flextime,fulltime,parttime&publicationPeriod=LAST_THREE_DAYS&escoIsco=C35,C6,C7,C8,C9,C54,C53,C51,C32&previousPageType=findJob&lang=en";
+        
+        $selector = "Array.from(document.links).map(l=>l.href).filter(h=>h&&h.includes('jv-details'))";
+        $links = $scraper->scrapeLinks($targetUrl, $selector, 35);
 
-            if (!$sender) {
-                echo "CRITICAL: All senders reached daily limit (400).\n";
-                break 3;
+        if (empty($links)) {
+            echo "[END] No links found on Page $p.\n";
+            break;
+        }
+
+        foreach ($links as $link) {
+            $jobId = explode('?', str_replace("https://europa.eu/eures/portal/jv-se/jv-details/", "", $link))[0];
+
+            $emails = getEmailsForJob($jobId);
+            
+            foreach ($emails as $email) {
+                // Write lead directly to temp batch file
+                $log_entry = $email . PHP_EOL;
+                fwrite($archive_handle, $log_entry);
+                $leadsSavedCount++;
+
+                echo "Saved lead: $email\n";
             }
-
-            // TRIGGER YOUR ANTI-SPAM MAILER LOGIC
-            $status = $mailer->triggerEmailSending($email, $sender['id'], $lang);
-            echo "Lead: $email | Sender: {$sender['id']} count: {$sender['count']} | Result: $status\n";
-            $log_entry = $email . PHP_EOL;
-            fwrite($archive_handle, $log_entry);
-
-             
         }
     }
 
-     
+    if (file_exists($checkpointFile)) {
+        unlink($checkpointFile);
+    }
+
+} catch (Exception $e) {
+    echo "FATAL ERROR: " . $e->getMessage() . "\n";
+} finally {
+    // 1. Flush and close text file handle
+    if (is_resource($archive_handle)) {
+        fclose($archive_handle);
+    }
+
+    // 2. Close Scraper instance
+    if ($scraper) $scraper->close();
+
+    // 3. Move file from /temp/ to final /textfile/ directory
+    if ($leadsSavedCount > 0 && file_exists($tempTextPath)) {
+        if (rename($tempTextPath, $finalTextPath)) {
+            echo "\n=== SUCCESS: $leadsSavedCount LEADS LOGGED. FILE MOVED TO: $finalTextPath ===\n";
+        } else {
+            echo "\n=== WARNING: COULD NOT MOVE FILE FROM TEMP TO FINAL LOCATION. ===\n";
+        }
+    } else {
+        if (file_exists($tempTextPath)) {
+            unlink($tempTextPath); // Delete empty temp file
+        }
+        echo "\n--- NOTICE: NO LEADS SAVED. TEMP FILE REMOVED. ---\n";
+    }
 }
 
-if (file_exists($checkpointFile)) unlink($checkpointFile);
-$db->close();
-$scraper->close();
 echo "\n--- ALL TASKS COMPLETED ---\n";
