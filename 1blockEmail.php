@@ -1,65 +1,30 @@
 <?php
+/**
+ * DAZZ LEGACY - STEP 1: THUNDERBIRD & IMAP BOUNCE SCANNER + BLOCKED EMAIL SYNC
+ * Automatically finds "Delivery Status Notification (Failure)" messages in:
+ *   1. Local Mozilla Thunderbird Profiles (%APPDATA%\Thunderbird\Profiles\*)
+ *   2. Live Gmail/IMAP Inboxes for all sender accounts in `EmailIds`
+ *   3. Manual entries in `Datas/Blocked/BlockEmail.txt`
+ * Appends discovered bounces to `Datas/Blocked/BlockEmail.txt`, updates `AgentsEmailTable SET Statuss = '2'`,
+ * and archives all blocked emails to `Datas/Blocked/Archive/` and `Datas/Blocked/Bounce_Report_<date>.csv`.
+ */
 require 'vendor/autoload.php';
-require 'src/Config.php';
-require 'src/Mailer.php';
+require_once 'src/Config.php';
+require_once 'src/BounceScanner.php';
 
-// --- CONFIGURATION ---
 use Dazz\Legacy\Config;
+use Dazz\Legacy\BounceScanner;
 
-$mysql_conn = Config::getDB();
+set_time_limit(0);
 
-// --- FILE PATHS ---
-$txt_file = 'Datas/Blocked/BlockEmail.txt'; 
-$archive_folder = 'Datas/Blocked/Archive/';
-$archive_file = $archive_folder . date('hmi-Y-m-d') . '_Master_Archive_Blocks.txt'; // Single file for all history
+try {
+    $db = Config::getDB();
+    $scanner = new BounceScanner($db);
 
-// --- PROCESS TEXT FILE ---
-if (!file_exists($txt_file)) {
-    die("Text file not found at: $txt_file");
+    // Scans Thunderbird local mailboxes + last 7 days of IMAP "Delivery Status Notification (Failure)" bounces
+    $scanner->runFullBounceAndBlockSync(true, 7);
+
+    $db->close();
+} catch (Exception $e) {
+    echo "ERROR in 1blockEmail.php: " . $e->getMessage() . "\n";
 }
-
-// Open for reading
-if (($handle = fopen($txt_file, "r")) !== FALSE) {
-    echo "--- STARTING BLOCK PROCESS ---\n";
-
-    // Prepare DB update
-    $stmt = $mysql_conn->prepare("UPDATE AgentsEmailTable SET Statuss = '2' where EmailId = ?");
-   
-    if (!is_dir($archive_folder)) mkdir($archive_folder, 0777, true);
-    $archive_handle = fopen($archive_file, 'a');
-
-    while (($line = fgets($handle)) !== FALSE) {
-        $email = trim($line);
-
-        if (filter_var($email, FILTER_VALIDATE_EMAIL)) {
-            // 1. Update Database
-            $stmt->bind_param("s", $email);
-            $stmt->execute();
-            
-            if ($stmt->affected_rows > 0) {
-                echo "[OK] $email blocked.\n";
-            }
-
-            // 2. Move content to Archive (Add timestamp for reference)
-            $log_entry = date('Y-m-d H:i:s') . " | " . $email . PHP_EOL;
-            fwrite($archive_handle, $log_entry);
-        }
-    }
-    
-    $stmt->close();
-    fclose($handle);
-    fclose($archive_handle);
-
-    // --- CLEAR THE ORIGINAL FILE (DO NOT DELETE) ---
-    // Opening with 'w' and immediately closing empties the file
-    $clear_handle = fopen($txt_file, 'w');
-    fclose($clear_handle);
-
-    echo "\nSUCCESS: Database updated. Content moved to Master Archive. 'BlockEmail.txt' is now empty.\n";
-
-} else {
-    echo "Could not open the file.";
-}
-
-$mysql_conn->close();
-?>
