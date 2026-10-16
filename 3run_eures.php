@@ -76,7 +76,7 @@ try {
         file_put_contents($checkpointFile, $p);
         echo "\n[PAGINATION] Accessing Page $p...\n";
         
-        $targetUrl = "https://europa.eu/eures/portal/jv-se/search?page=$p&resultsPerPage=50&orderBy=MOST_RECENT&locationCodes=at,cy,cz,ee,el,es,fr,hr,lt,lv,mt,nl,pl,se,si,bg,it,hu,ro,pt&positionScheduleCodes=NS,flextime,fulltime,parttime&publicationPeriod=LAST_THREE_DAYS&escoIsco=C35,C6,C7,C8,C9,C54,C53,C51,C32&previousPageType=findJob&lang=en";
+        $targetUrl = "https://europa.eu/eures/portal/jv-se/search?page=$p&resultsPerPage=50&orderBy=MOST_RECENT&locationCodes=at,be,bg,hr,cy,cz,dk,ee,fr,de,el,hu,ie,it,lv,lt,mt,nl,pl,pt,ro,si,es,se,NS,fi,is,li,lu,no,ch&positionScheduleCodes=NS,flextime,fulltime,parttime&publicationPeriod=LAST_THREE_DAYS&escoIsco=C322,C51,C53,C54,C6,C7,C8,C9&minNumberPost=2&previousPageType=findJob&lang=en";
         
         $selector = "Array.from(document.links).map(l=>l.href).filter(h=>h&&h.includes('jv-details'))";
         $links = $scraper->scrapeLinks($targetUrl, $selector, 35);

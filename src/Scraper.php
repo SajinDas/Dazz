@@ -15,7 +15,7 @@ class Scraper {
         ]);
     }
 
-    public function scrapeLinks($url, $selector, $wait = 35) {
+    public function scrapeLinks($url, $selector, $wait = 5) {
         try {
             $page = $this->browser->createPage();
             $page->navigate($url)->waitForNavigation('networkIdle', 60000); 

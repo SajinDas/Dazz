@@ -7,6 +7,7 @@ class Config {
     const DB_USER     = 'root';
     const DB_PASS     = 'M!cr0s0ft';
     const DB_NAME     = 'dazz';
+    
 
     public static function getDB() {
     // Add the backslash here!

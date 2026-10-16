@@ -16,11 +16,7 @@ class MailerSk {
      */
     public function triggerEmailSending($email, $senderId, $company, $contact, $occupation) {
         try {
-
-        $templateDir = 'EmailTemplate/';
-        
-            // 1. Load the HTML template
-            // Suggestion: Keep this in a 'templates' folder
+            $templateDir = 'EmailTemplate/';
             $templatePath = $templateDir . 'EmailTemplateSk.html';
 
             if (!file_exists($templatePath)) {
@@ -29,7 +25,7 @@ class MailerSk {
 
             $rawHtml = file_get_contents($templatePath);
 
-            // 2. Perform Placeholder Replacements
+            // Perform Placeholder Replacements
             $placeholders = [
                 '{{Company_Name}}' => $company,
                 '{{Contact_Name}}' => $contact,
@@ -39,12 +35,10 @@ class MailerSk {
 
             $finalHtml = strtr($rawHtml, $placeholders);
 
-            // 3. Dynamic Subject Line
-            // Using the occupation and company to bypass spam filters
-            $subject = "Reliable " . $occupation . "s for " . $company." From India";
+            // Dynamic Subject Line
+            $subject = "Reliable " . $occupation . "s for " . $company . " From India";
 
-            // 4. Send the Email
-            // This calls your existing internal sending logic (PHPMailer / SMTP)
+            // Send the Email
             return $this->sendEmail($email, $senderId, $subject, $finalHtml);
 
         } catch (Exception $e) {
@@ -53,9 +47,9 @@ class MailerSk {
     }
 
     /**
-     * Checks if a sender has reached the daily limit (e.g., 400)
+     * Checks if a sender has reached the daily limit (e.g., 200)
      */
-     public function getValidSender($senderIds, $limit = 400) {
+    public function getValidSender($senderIds, $limit = 450) {
         foreach ($senderIds as $id) {
             $stmt = $this->db->prepare("SELECT COUNT(*) as cnt FROM AgentsEmailTable WHERE SendedEmail = ? AND SendDate >= DATE_SUB(NOW(), INTERVAL 24 HOUR)");
             $stmt->bind_param("i", $id);
@@ -63,32 +57,38 @@ class MailerSk {
             $result = $stmt->get_result()->fetch_assoc();
             $count = $result['cnt'];
             $stmt->close();
+            
             echo "Sender ID: $id | Sent in last 24h: $count\n";
             
-            if ($count < $limit) return ['id' => $id, 'count' => $count];
+            if ($count < $limit) {
+                return ['id' => $id, 'count' => $count];
+            }
         }
         return false;
     }
 
     /**
-     * Internal logic to handle the actual SMTP/API transport
+     * Internal logic to handle actual SMTP transport with error catching
      */
     private function sendEmail($to, $senderId, $subject, $body) {
 
-    $stmt = $this->db->prepare("SELECT Id FROM AgentsEmailTable WHERE EmailId = ? LIMIT 1");
+        // Check if recipient exists in DB
+        $stmt = $this->db->prepare("SELECT Id FROM AgentsEmailTable WHERE EmailId = ? LIMIT 1");
         $stmt->bind_param("s", $to);
         $stmt->execute();
         $emailexits = $stmt->get_result()->fetch_assoc();
         $stmt->close();
 
-        // COOLDOWN CHECK: Statuss 2 (Blocked) or sent in last 7 days
+        // COOLDOWN CHECK: Statuss 2 (Blocked) or sent in last 5 days
         $stmt = $this->db->prepare("SELECT Id FROM AgentsEmailTable WHERE EmailId = ? AND (Statuss = '2' OR (SendDate >= DATE_SUB(NOW(), INTERVAL 5 DAY) AND Statuss = '1')) LIMIT 1");
         $stmt->bind_param("s", $to);
         $stmt->execute();
         $cooldown = $stmt->get_result()->fetch_assoc();
         $stmt->close();
 
-        if ($cooldown) return "Skipped: Cooldown/Blocked";
+        if ($cooldown) {
+            return "Skipped: Cooldown/Blocked";
+        }
 
         // Get Sender Credentials
         $stmt = $this->db->prepare("SELECT Address, Password FROM EmailIds WHERE Id = ?");
@@ -96,14 +96,14 @@ class MailerSk {
         $stmt->execute();
         $sender = $stmt->get_result()->fetch_assoc();
         $stmt->close();
-        if (!$sender) return "Error: Sender Creds";
 
- 
-
+        if (!$sender) {
+            return "Error: Sender Creds";
+        }
 
         $mail = new PHPMailer(true);
+
         try {
-           // $to = trim("a.sajindas@gmail.com");
             $mail->isSMTP();
             $mail->Host       = 'smtp.gmail.com';
             $mail->SMTPAuth   = true;
@@ -115,15 +115,15 @@ class MailerSk {
             $mail->setFrom($sender['Address'], 'Sajin Das | Dazz Legacy');
             $mail->addAddress($to);
             $mail->isHTML(true);
-$uniqueHash = bin2hex(random_bytes(8));
-            //$subjectSet = $subjects[$safeLang] ?? $subjects['en'];
+
+            $uniqueHash = bin2hex(random_bytes(8));
             $mail->Subject = $subject;
             $mail->Body    = $body;
             $mail->addCustomHeader('X-Campaign-ID', $uniqueHash);
 
             $mail->send();
 
-            // UPDATE OR INSERT DB Record
+            // UPDATE OR INSERT DB Record on Successful Send
             if ($emailexits) {
                 $updateStmt = $this->db->prepare("UPDATE AgentsEmailTable SET SendDate = NOW(), Statuss = '1', SendedEmail = ? WHERE Id = ?");
                 $updateStmt->bind_param("ii", $senderId, $emailexits['Id']);
@@ -135,10 +135,26 @@ $uniqueHash = bin2hex(random_bytes(8));
                 $insertStmt->execute();
                 $insertStmt->close();
             }
-             sleep(rand(30, 45));
-        return "SUCCESS"; 
-    } catch (Exception $e) { 
-            return "Mailer Error: " . $mail->ErrorInfo; 
+
+            return "Success";
+
+        } catch (Exception $e) {
+            $errorInfo = $mail->ErrorInfo;
+
+            // Catch Gmail 550 5.4.5 limit errors specifically
+            if (strpos($errorInfo, '5.4.5') !== false || strpos($errorInfo, 'Daily user sending limit exceeded') !== false) {
+                
+                // Record dummy entries in AgentsEmailTable to cap the daily count for this sender instantly
+                $dummyEmail = "LIMIT_REACHED_" . $senderId . "_" . time() . "@internal.local";
+                $padStmt = $this->db->prepare("INSERT INTO AgentsEmailTable (EmailId, SendDate, Statuss, SendedEmail) VALUES (?, NOW(), '0', ?)");
+                $padStmt->bind_param("si", $dummyEmail, $senderId);
+                //$padStmt->execute();
+                $padStmt->close();
+
+                return "Mailer Error: SMTP 550 Limit Exceeded on Sender ID " . $senderId;
+            }
+
+            return "Mailer Error: " . $errorInfo;
         }
     }
 }

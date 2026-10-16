@@ -12,13 +12,13 @@ set "HOUR=%TIME:~0,2%"
 set "HOUR=%HOUR: =%"
 
 :: Check if current hour is between 8 (8 AM) and 19 (7:59 PM)
-if %HOUR% GEQ 3 if %HOUR% LSS 20 (
+if %HOUR% GEQ 8 if %HOUR% LSS 22 (
     goto RUN_TASKS
 )
 
 :: If outside operating hours, execution drops through to here
 echo ====================================================================
-echo Outside operating hours (03:00 to 20:00).
+echo Outside operating hours (08:00 to 20:00).
 echo Current Time: %date% %time%
 echo Waiting 10 minutes before checking again...
 echo ====================================================================
